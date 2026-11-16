@@ -241,18 +241,21 @@ GRANT SELECT ON public.my_notifications TO authenticated;
 
 DROP POLICY IF EXISTS "Users can manage own push subscriptions" ON public.push_subscriptions;
 
+DROP POLICY IF EXISTS "Users read own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users read own push subscriptions"
   ON public.push_subscriptions
   FOR SELECT
   TO authenticated
   USING (public.is_own_player_id(player_id));
 
+DROP POLICY IF EXISTS "Users delete own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users delete own push subscriptions"
   ON public.push_subscriptions
   FOR DELETE
   TO authenticated
   USING (public.is_own_player_id(player_id));
 
+DROP POLICY IF EXISTS "Users add own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users add own push subscriptions"
   ON public.push_subscriptions
   FOR INSERT
@@ -262,6 +265,7 @@ CREATE POLICY "Users add own push subscriptions"
     AND (club_id IS NULL OR public.is_player_in_club(player_id, club_id))
   );
 
+DROP POLICY IF EXISTS "Users update own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users update own push subscriptions"
   ON public.push_subscriptions
   FOR UPDATE
